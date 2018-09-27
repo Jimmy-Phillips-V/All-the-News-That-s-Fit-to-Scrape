@@ -27,6 +27,7 @@ var PORT = 3000;
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
+
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
 // Use express.static to serve the public folder as a static directory
@@ -46,21 +47,19 @@ app.get("/scrape", function(req, res) {
     var array = []
     // console.log(response.data)
     // Now, we grab every h3 within an article tag, and do the following:
-    $("h3.title").each(function(i, element) {
+    $(".story-text").each(function(i, element) {
       // Save an empty result object
       var result = {};
-      console.log(element)
+      // console.log(element)
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
-        .text();
+        .find('h3.title').text();
       result.link = $(this)
-        .parent("a")
-        .attr("href");
+        .children().eq(2).attr('href');
       result.teaser = $(this)
-        .parent("a")
-        .attr("href")
-
+        .find("p.teaser")
+        .text();
       array.push(result)
 
       var article = new Article(result)

@@ -1,7 +1,11 @@
 <h1>News Scraper</h1>
 {{#each items}}
-        <p>{{this.title}} <button uk-toggle="target: #modal-example" data-id={{id}} class="comment">Comment!</button></p>
-        {{id}}
+    <div class="uk-card uk-card-body npr-news">
+        <p class="npr-title">{{this.title}} </p>
+        <p>{{this.link}}</p>
+        <p>{{this.teaser}}</p>
+        <button uk-toggle="target: #modal-example" data-id={{id}} class="comment">Comment!</button>
+    </div>
 {{/each}}
 
 <!-- This is a button toggling the modal -->
