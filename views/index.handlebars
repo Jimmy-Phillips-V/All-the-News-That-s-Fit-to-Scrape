@@ -1,0 +1,49 @@
+<h1>News Scraper</h1>
+{{#each items}}
+        <p>{{this.title}} <button uk-toggle="target: #modal-example" data-id={{id}} class="comment">Comment!</button></p>
+        {{id}}
+{{/each}}
+
+<!-- This is a button toggling the modal -->
+<button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-example">Open</button>
+
+<!-- This is an anchor toggling the modal -->
+<a href="#modal-example" uk-toggle>Open</a>
+
+<!-- This is the modal -->
+<div id="modal-example" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Headline</h2>
+        <form id="comments-form"><div class="uk-margin">
+            <textarea class="uk-textarea" rows="5" placeholder="Textarea">Words are going here</textarea>
+        </div>
+        <p class="uk-text-right">
+            {{!-- <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button> --}}
+            <button class="uk-button uk-button-primary" type="submit">Save</button>
+        </p>
+        </form>
+    </div>
+</div>
+
+<script>
+
+var id;
+
+$("#comments-form").on("submit", function(event){
+     event.preventDefault();
+     var comment = $(".uk-textarea").val().trim()
+     var payload = {
+            text: comment,
+            articleID: id
+     }
+     $.post("/add-comment", payload, function(data){
+        console.log(data)
+     })
+})
+
+
+$(".comment").on("click", function(){
+     id = $(this).attr("data-id")
+     console.log()
+})
+</script>
