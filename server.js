@@ -21,7 +21,9 @@ var cheerio = require("cheerio");
 var Article = require("./models/article")
 var Comments = require("./models/comments")
 
-var PORT = 3000;
+app.use(express.static("public"))
+
+var PORT = process.env.PORT || 3000;
 
 // Configure middleware
 
@@ -34,8 +36,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/week18Populater", { useNewUrlParser: true });
 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 // Routes
 
 // A GET route for scraping the echoJS website
@@ -92,12 +96,10 @@ app.get("/comments", function(req, res) {
 });
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
+
 
 // Start the server
 app.listen(PORT, function() {
